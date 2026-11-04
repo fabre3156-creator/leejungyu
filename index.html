@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>새롬 사육사 돕기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+/* Layout: one projector screen — zoo signboard header, content stage, two fenced enclosures (우리) side by side. Single light look on purpose (projector-friendly). */
+:root{
+  --leaf:#1F5B3A;      /* zoo sign green */
+  --leaf-deep:#123A25;
+  --sun:#F2B705;       /* keeper badge yellow */
+  --ground:#EEF2E6;    /* pale grass-grey page */
+  --paper:#FFFFFF;
+  --ink:#1C2A21;
+  --muted:#5C6B60;
+  --eye:#1E6FB8;       /* 눈으로 확인 */
+  --eye-soft:#E3EEF9;
+  --heart:#C2457A;     /* 마음으로 느낌 */
+  --heart-soft:#FBE7EF;
+  --wood:#9A6B3F;
+  --wood-dark:#6E4A2A;
+  --ok:#2E8B57;
+  --ok-soft:#E2F3E8;
+  --hint:#B7791F;
+  --hint-soft:#FFF4DA;
+  --display:"Jua","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  --body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  --fs:clamp(16px,1.45vw + .35vh,26px);
+  color-scheme:light;
+}
+html,body{height:100%}
+body{background:var(--ground);color:var(--ink);font-family:var(--body);font-size:var(--fs);line-height:1.5}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:4px solid var(--sun);outline-offset:3px}
+
+#app{min-height:100%;display:flex;flex-direction:column}
+.bar{background:var(--leaf);color:#fff;display:flex;align-items:center;gap:.8em;flex-wrap:wrap;
+  padding-block:.45em;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  border-bottom:.3em solid var(--sun)}
+.brand{font-family:var(--display);font-size:1.15em;display:flex;align-items:center;gap:.4em;background:none;border:0;color:#fff;padding:0}
+.brand .badge{width:1.6em;height:1.6em;border-radius:50%;background:var(--sun);color:var(--leaf-deep);display:grid;place-items:center;font-size:.8em}
+.tabs{display:flex;gap:.35em;margin-left:auto;flex-wrap:wrap}
+.tab{background:transparent;border:2px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:.15em .8em;font-family:var(--display);font-size:.8em}
+.tab[aria-current="true"]{background:var(--sun);color:var(--leaf-deep);border-color:var(--sun)}
+.tools{display:flex;gap:.35em}
+.tool{background:rgba(255,255,255,.12);border:0;color:#fff;border-radius:.5em;padding:.2em .6em;font-size:.72em}
+
+main{flex:1;display:flex;flex-direction:column;gap:.9em;
+  padding-block:1em 1.2em;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  max-width:1500px;width:100%;margin:0 auto}
+
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;line-height:1.25}
+h1{font-size:2.3em;color:var(--leaf-deep)}
+h2{font-size:1.6em;color:var(--leaf-deep)}
+p{margin:0}
+.eyebrow{font-family:var(--display);color:var(--wood);font-size:.85em;letter-spacing:.04em}
+
+/* Home */
+.home{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:1.5em;align-items:center;flex:1}
+.story{display:flex;gap:1em;align-items:flex-end}
+.keeper{width:7em;flex:none}
+.bubble{background:var(--paper);border:3px solid var(--leaf);border-radius:1em;padding:.8em 1em;position:relative;font-size:1.05em}
+.bubble::before{content:"";position:absolute;left:-14px;bottom:1.2em;border:12px solid transparent;border-right-color:var(--leaf);border-left:0}
+.bubble b{font-family:var(--display);font-weight:400;color:var(--leaf)}
+.stages{display:flex;flex-direction:column;gap:.7em}
+.stage-card{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.9em;align-items:center;text-align:left;
+  background:var(--paper);border:0;border-left:.45em solid var(--leaf);border-radius:.6em;padding:.8em 1em;box-shadow:0 2px 0 rgba(18,58,37,.12)}
+.stage-card:hover{transform:translateY(-2px)}
+.stage-card .num{font-family:var(--display);font-size:1.5em;width:1.8em;height:1.8em;border-radius:50%;background:var(--ground);color:var(--leaf);display:grid;place-items:center}
+.stage-card h3{font-size:1.15em}
+.stage-card .when{font-size:.72em;color:var(--muted)}
+.stage-card .go{font-family:var(--display);color:var(--leaf);font-size:1.4em}
+
+/* Stage 1 */
+.s1{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.2em;flex:1;align-items:start}
+.crit-card{background:#FFF7C9;border-radius:.3em;padding:1.2em 1em;text-align:center;box-shadow:0 6px 0 rgba(0,0,0,.07);transform:rotate(-1deg);position:relative}
+.crit-card::before{content:"";position:absolute;top:-.55em;left:50%;width:4em;height:1.1em;margin-left:-2em;background:rgba(242,183,5,.55);transform:rotate(2deg)}
+.crit-card .label{font-size:.75em;color:var(--muted)}
+.crit-card .q{font-family:var(--display);font-size:3.1em;color:var(--ink);line-height:1.2;margin-top:.15em}
+.crit-card .chal{display:inline-block;background:var(--leaf);color:#fff;font-family:var(--display);font-size:.7em;border-radius:999px;padding:0 .7em;margin-bottom:.3em}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:.7em;margin-top:1em}
+.choice{border:3px solid;border-radius:.8em;padding:.8em .6em;background:var(--paper);display:flex;flex-direction:column;align-items:center;gap:.3em;font-family:var(--display);font-size:1.15em}
+.choice svg{width:2.4em;height:2.4em}
+.choice.eye{border-color:var(--eye);color:var(--eye)}
+.choice.heart{border-color:var(--heart);color:var(--heart)}
+.choice.eye:hover,.choice.eye.picked{background:var(--eye-soft)}
+.choice.heart:hover,.choice.heart.picked{background:var(--heart-soft)}
+.choice[disabled]{cursor:default;opacity:.45}
+.choice.picked{opacity:1}
+.dots{display:flex;gap:.35em;justify-content:center;margin-top:.9em}
+.dot{width:.65em;height:.65em;border-radius:50%;background:#cfd8cc}
+.dot.done{background:var(--leaf)}
+.dot.now{background:var(--sun);outline:2px solid var(--leaf)}
+
+.feedback{background:var(--paper);border-radius:.8em;padding:1em;display:flex;flex-direction:column;gap:.7em;min-height:100%}
+.feedback .wait{color:var(--muted);text-align:center;margin:auto;font-size:1.05em}
+.verdict{font-family:var(--display);font-size:1.35em}
+.verdict.good{color:var(--ok)}
+.verdict.think{color:var(--hint)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:.6em}
+.who{border-radius:.6em;padding:.6em .7em;background:var(--ground)}
+.who .name{font-family:var(--display);color:var(--leaf);font-size:.85em}
+.who .say{font-size:.95em}
+.who .ans{font-family:var(--display);font-size:1em;margin-top:.2em}
+.ex-animal{font-size:2.2em;text-align:center;line-height:1}
+.result-tag{font-family:var(--display);text-align:center;border-radius:.5em;padding:.35em;font-size:1.15em}
+.result-tag.same{background:var(--eye-soft);color:var(--eye)}
+.result-tag.diff{background:var(--heart-soft);color:var(--heart)}
+.why{font-size:.95em}
+.btn{font-family:var(--display);background:var(--leaf);color:#fff;border:0;border-radius:.6em;padding:.5em 1.1em;font-size:1.05em;align-self:flex-end}
+.btn.ghost{background:transparent;color:var(--leaf);border:3px solid var(--leaf)}
+.btn.sun{background:var(--sun);color:var(--leaf-deep)}
+.row{display:flex;gap:.6em;flex-wrap:wrap;justify-content:flex-end}
+
+.board{display:grid;grid-template-columns:1fr 1fr;gap:1em}
+.board-col{border-radius:.8em;padding:.9em;min-width:0}
+.board-col.same{background:var(--eye-soft);border:3px solid var(--eye)}
+.board-col.diff{background:var(--heart-soft);border:3px solid var(--heart)}
+.board-col h3{font-size:1.2em}
+.board-col.same h3{color:var(--eye)}
+.board-col.diff h3{color:var(--heart)}
+.board-col .sub{font-size:.8em;color:var(--muted);margin-bottom:.5em}
+.chips{display:flex;flex-wrap:wrap;gap:.4em}
+.chip{background:#FFF7C9;font-family:var(--display);padding:.15em .6em;border-radius:.25em;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.takeaway{background:var(--leaf);color:#fff;border-radius:.8em;padding:1em 1.2em;display:flex;flex-direction:column;gap:.3em}
+.takeaway b{font-family:var(--display);font-weight:400;font-size:1.25em;color:var(--sun)}
+
+/* Stage 2/3: zoo */
+.zoo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr) minmax(0,1fr);gap:1em;align-items:stretch;flex:1}
+.gate{display:flex;flex-direction:column;align-items:center;gap:.5em;text-align:center}
+.arrival{background:var(--paper);border-radius:1em;padding:.7em;width:100%;display:flex;flex-direction:column;align-items:center;gap:.2em;position:relative;border:3px dashed var(--wood)}
+.arrival .pic{width:100%;max-width:15em;aspect-ratio:200/170;position:relative}
+.arrival .pic svg{width:100%;height:100%;display:block}
+.nametag{font-family:var(--display);font-size:1.3em;background:var(--sun);color:var(--leaf-deep);border-radius:.3em;padding:0 .7em}
+.nametag.lost{background:var(--ground);color:var(--muted);border:2px dashed var(--muted);transform:rotate(-3deg)}
+.gate .ask{font-family:var(--display);font-size:1.05em;color:var(--leaf-deep)}
+.gate .crit-mini{font-family:var(--display);background:#FFF7C9;padding:.2em .8em;border-radius:.25em;font-size:1.25em;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.callout{position:absolute;font-family:var(--display);font-size:.8em;background:var(--heart);color:#fff;border-radius:.4em;padding:0 .5em;white-space:nowrap}
+.callout.b{background:var(--eye)}
+
+.pen{display:flex;flex-direction:column;background:transparent;border:0;padding:0;text-align:center;border-radius:.8em;min-width:0}
+.pen .plaque{background:var(--wood);color:#fff;border-radius:.4em .4em 0 0;padding:.35em .5em;border:3px solid var(--wood-dark);border-bottom:0}
+.pen .plaque b{font-family:var(--display);font-weight:400;font-size:1.5em;display:block;line-height:1.2}
+.pen .plaque small{font-size:.8em;opacity:.9}
+.pen .yard{flex:1;min-height:9em;background:
+   linear-gradient(transparent 70%, rgba(110,74,42,.12) 70%),
+   #DCE9C9;
+   border-left:.5em solid var(--wood);border-right:.5em solid var(--wood);display:flex;flex-wrap:wrap;align-content:flex-end;justify-content:center;gap:.2em;padding:.5em;position:relative}
+.pen .fence{height:1.3em;background:repeating-linear-gradient(90deg,var(--wood) 0 .5em,transparent .5em 1.3em),linear-gradient(transparent 35%,var(--wood-dark) 35% 55%,transparent 55%);border-radius:0 0 .3em .3em}
+.pen:hover .yard,.pen.glow .yard{background-color:#CDE3B0}
+.pen.glow{outline:5px solid var(--sun);outline-offset:3px}
+.pen.wrong{animation:shake .4s}
+.pen[disabled]{cursor:default}
+.resident{width:5.2em;display:flex;flex-direction:column;align-items:center;animation:pop .45s ease-out}
+.resident svg{width:100%;height:auto;display:block}
+.resident span{font-family:var(--display);font-size:.75em;background:rgba(255,255,255,.85);border-radius:.3em;padding:0 .4em}
+.pen-hint{position:absolute;inset:0;display:grid;place-items:center;color:rgba(28,42,33,.35);font-family:var(--display);font-size:1em;pointer-events:none}
+
+.msg{border-radius:.8em;padding:.7em 1em;display:flex;gap:.8em;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.msg.ok{background:var(--ok-soft);border:3px solid var(--ok)}
+.msg.hint{background:var(--hint-soft);border:3px solid var(--hint)}
+.msg.info{background:var(--paper);border:3px solid var(--leaf)}
+.msg.puzzle{background:var(--heart-soft);border:3px solid var(--heart)}
+.msg p{flex:1;min-width:12em}
+.msg strong{font-family:var(--display);font-weight:400;font-size:1.15em}
+
+.pick-crit{display:flex;flex-direction:column;gap:.8em;flex:1}
+.crit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(11em,1fr));gap:.8em}
+.crit-btn{background:#FFF7C9;border:0;border-radius:.3em;padding:1em .6em;font-family:var(--display);font-size:1.6em;box-shadow:0 5px 0 rgba(0,0,0,.08)}
+.crit-btn:nth-child(odd){transform:rotate(-1deg)}
+.crit-btn:nth-child(even){transform:rotate(1deg)}
+.crit-btn:hover{background:#FFEF9A}
+.lineup{display:flex;gap:1em;justify-content:center;flex-wrap:wrap}
+.lineup figure{margin:0;width:8em;text-align:center}
+.lineup figure svg{width:100%;height:auto}
+.lineup figcaption{font-family:var(--display)}
+
+.qr-wrap{position:fixed;inset:0;background:rgba(18,58,37,.82);display:grid;place-items:center;z-index:20;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.qr-card{background:var(--paper);border-radius:1em;padding:1.2em 1.5em;display:flex;flex-direction:column;align-items:center;gap:.7em;max-width:100%;border:.35em solid var(--sun)}
+.qr-box{width:min(70vh,80vw);aspect-ratio:1;max-width:100%;display:grid;place-items:center;background:#fff}
+.qr-box img,.qr-box canvas{width:100%!important;height:auto!important;image-rendering:pixelated}
+.qr-url{font-size:.75em;color:var(--muted);word-break:break-all;text-align:center;user-select:all}
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.bob{animation:bob 2.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+@media (max-width:900px){
+  .home,.s1{grid-template-columns:1fr}
+  .zoo{grid-template-columns:1fr 1fr}
+  .zoo .gate{grid-column:1 / -1;order:-1}
+  h1{font-size:1.8em}
+}
+@media (max-width:520px){
+  .duo,.board,.choices{grid-template-columns:1fr}
+  .crit-card .q{font-size:2.3em}
+  .keeper{width:5em}
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header class="bar">
+    <button class="brand" id="homeBtn" type="button"><span class="badge">숲</span>숲속 동물원 · 새롬 사육사 돕기</button>
+    <nav class="tabs" id="tabs" aria-label="활동 단계"></nav>
+    <div class="tools">
+      <button class="tool" id="soundBtn" type="button" aria-pressed="true">소리 켬</button>
+      <button class="tool" id="fsBtn" type="button">전체 화면</button>
+      <button class="tool" id="qrBtn" type="button">QR 코드</button>
+    </div>
+  </header>
+  <main id="view"></main>
+</div>
+<div class="qr-wrap" id="qrWrap" hidden>
+  <div class="qr-card" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
+    <h2 id="qrTitle">태블릿으로 찍어 보세요!</h2>
+    <div id="qrBox" class="qr-box"></div>
+    <p class="qr-url" id="qrUrl"></p>
+    <button class="btn" type="button" id="qrClose">닫기</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function(){
+"use strict";
+let uid=0;
+/* ---------- illustrations ---------- */
+const ART={
+ostrich:()=>`<svg viewBox="0 0 200 170" aria-hidden="true">
+ <line x1="92" y1="112" x2="84" y2="160" stroke="#d9a78a" stroke-width="7" stroke-linecap="round"/>
+ <line x1="110" y1="112" x2="120" y2="160" stroke="#d9a78a" stroke-width="7" stroke-linecap="round"/>
+ <path d="M76 162h14M114 162h16" stroke="#b9876a" stroke-width="6" stroke-linecap="round"/>
+ <path d="M52 88q-22-12-16 8q-12 6 2 14q10 2 16-6z" fill="#fff" stroke="#555" stroke-width="2"/>
+ <ellipse cx="100" cy="92" rx="50" ry="30" fill="#3a3a3a"/>
+ <path d="M68 86q22-26 54-6q-12 26-54 6z" fill="#f4f4f4" stroke="#444" stroke-width="2"/>
+ <path d="M76 86q14-8 28-2M80 92q14-4 26 0" stroke="#bbb" stroke-width="2" fill="none"/>
+ <path d="M134 78C140 60 140 42 146 26" stroke="#d9a78a" stroke-width="10" stroke-linecap="round" fill="none"/>
+ <circle cx="148" cy="24" r="11" fill="#d9a78a"/>
+ <circle cx="151" cy="21" r="2.6" fill="#111"/>
+ <path d="M157 21l17 4l-17 5z" fill="#d79a2f" stroke="#a8721a" stroke-width="1.5"/>
+</svg>`,
+whale:()=>`<svg viewBox="0 0 200 170" aria-hidden="true">
+ <path d="M160 98C174 84 184 72 197 62C192 82 190 94 178 106C190 118 192 128 197 148C185 140 175 130 160 117Z" fill="#3d6a99"/>
+ <path d="M12 106C12 72 55 56 105 61C140 65 165 86 170 106C165 126 140 141 100 143C50 145 12 136 12 106Z" fill="#4f7fb0"/>
+ <path d="M20 116C50 136 110 139 162 112C140 133 100 141 60 139C38 136 24 127 20 116Z" fill="#cfe0ef"/>
+ <path d="M70 128C76 150 63 162 45 166C55 150 58 140 58 128Z" fill="#3d6a99"/>
+ <circle cx="42" cy="101" r="4.5" fill="#132a40"/>
+ <path d="M14 113Q40 120 62 113" stroke="#2d4f73" stroke-width="3" fill="none" stroke-linecap="round"/>
+ <path d="M84 56q-4-16 4-26M84 56q6-14 18-18M84 56q-12-10-20-8" stroke="#8fb9e0" stroke-width="4" fill="none" stroke-linecap="round"/>
+</svg>`,
+lizard:()=>`<svg viewBox="0 0 200 170" aria-hidden="true">
+ <g stroke="#4f8a35" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none">
+  <path d="M122 72l10-24l10-3"/><path d="M122 98l10 24l10 3"/>
+  <path d="M70 72l-10-24l-10-3"/><path d="M70 98l-10 24l-10 3"/>
+ </g>
+ <path d="M56 78Q18 76 6 112Q26 88 56 94Z" fill="#6fae4f"/>
+ <ellipse cx="96" cy="85" rx="46" ry="17" fill="#6fae4f"/>
+ <ellipse cx="152" cy="85" rx="20" ry="13" fill="#6fae4f"/>
+ <g fill="#4f8a35"><circle cx="80" cy="82" r="3"/><circle cx="94" cy="88" r="3"/><circle cx="108" cy="81" r="3"/><circle cx="66" cy="86" r="2.5"/><circle cx="120" cy="88" r="2.5"/></g>
+ <circle cx="158" cy="77" r="3.3" fill="#111"/><circle cx="158" cy="93" r="3.3" fill="#111"/>
+</svg>`,
+pangolin:()=>{const id="ps"+(++uid);return `<svg viewBox="0 0 200 170" aria-hidden="true">
+ <defs><pattern id="${id}" width="20" height="13" patternUnits="userSpaceOnUse">
+  <rect width="20" height="13" fill="#9b6b3f"/>
+  <path d="M0 13Q10-3 20 13" fill="#b9874f" stroke="#6e4a2a" stroke-width="1.8"/>
+  <path d="M-10 6.5Q0-9.5 10 6.5M10 6.5Q20-9.5 30 6.5" fill="none" stroke="#6e4a2a" stroke-width="1.8"/>
+ </pattern></defs>
+ <g fill="#7a5233"><rect x="56" y="118" width="14" height="32" rx="6"/><rect x="126" y="118" width="14" height="32" rx="6"/></g>
+ <g fill="#c99a6a" stroke="#6e4a2a" stroke-width="2"><rect x="72" y="120" width="15" height="34" rx="6"/><rect x="142" y="120" width="15" height="34" rx="6"/></g>
+ <path d="M73 154l-3 5M79 154v6M85 154l3 5M143 154l-3 5M149 154v6M155 154l3 5" stroke="#4a311c" stroke-width="2" stroke-linecap="round"/>
+ <path d="M42 118C12 118 2 140 12 162C22 150 32 140 52 134Z" fill="url(#${id})" stroke="#6e4a2a" stroke-width="2.5"/>
+ <path d="M28 132C30 80 70 52 115 55C150 58 170 85 172 125L172 132Z" fill="url(#${id})" stroke="#6e4a2a" stroke-width="3"/>
+ <path d="M160 98C178 100 192 115 197 130C185 134 170 134 160 130Z" fill="#d9b48f" stroke="#6e4a2a" stroke-width="2"/>
+ <circle cx="173" cy="112" r="2.8" fill="#111"/>
+</svg>`},
+platypus:()=>`<svg viewBox="0 0 200 170" aria-hidden="true">
+ <g fill="#5e3f27"><rect x="62" y="116" width="11" height="22" rx="4"/><rect x="118" y="116" width="11" height="22" rx="4"/></g>
+ <g fill="#3b3b44"><ellipse cx="66" cy="140" rx="11" ry="4.5"/><ellipse cx="122" cy="140" rx="11" ry="4.5"/></g>
+ <ellipse cx="30" cy="108" rx="25" ry="11" fill="#5e3f27" transform="rotate(-8 30 108)"/>
+ <ellipse cx="95" cy="104" rx="58" ry="27" fill="#7a5233"/>
+ <g fill="#7a5233"><rect x="76" y="118" width="12" height="24" rx="4"/><rect x="132" y="116" width="12" height="26" rx="4"/></g>
+ <g fill="#3b3b44"><ellipse cx="82" cy="144" rx="12" ry="5"/><ellipse cx="138" cy="144" rx="12" ry="5"/></g>
+ <circle cx="146" cy="98" r="19" fill="#7a5233"/>
+ <path d="M157 90C175 83 192 86 197 95C198 106 185 111 159 110Z" fill="#3b3b44"/>
+ <circle cx="183" cy="92" r="1.8" fill="#777"/><circle cx="189" cy="93" r="1.8" fill="#777"/>
+ <circle cx="149" cy="91" r="3.3" fill="#111"/><circle cx="150" cy="90" r="1" fill="#fff"/>
+</svg>`,
+keeper:()=>`<svg viewBox="0 0 120 150" class="keeper bob" aria-hidden="true">
+ <path d="M18 150C18 112 34 96 60 96S102 112 102 150Z" fill="#2f7a4f"/>
+ <path d="M48 98l12 16l12-16" fill="#e9f2e3"/>
+ <rect x="70" y="118" width="22" height="13" rx="3" fill="#F2B705"/>
+ <text x="81" y="128" font-size="8.5" text-anchor="middle" fill="#123A25" font-family="Jua,sans-serif">새롬</text>
+ <rect x="52" y="82" width="16" height="18" rx="6" fill="#f2c9a0"/>
+ <circle cx="60" cy="60" r="28" fill="#f2c9a0"/>
+ <path d="M32 58C32 40 44 30 60 30S88 40 88 58C80 50 70 48 60 48S40 50 32 58Z" fill="#3b2a20"/>
+ <path d="M30 46C30 26 44 18 60 18S90 26 90 46Z" fill="#1F5B3A"/>
+ <path d="M24 46h56c8 0 14 2 16 5H24Z" fill="#123A25"/>
+ <circle cx="60" cy="30" r="5" fill="#F2B705"/>
+ <circle cx="50" cy="62" r="3.2" fill="#2a1d16"/><circle cx="70" cy="62" r="3.2" fill="#2a1d16"/>
+ <path d="M51 73q9 8 18 0" stroke="#a5503a" stroke-width="3" fill="none" stroke-linecap="round"/>
+ <circle cx="43" cy="70" r="4" fill="#f4a9a0" opacity=".7"/><circle cx="77" cy="70" r="4" fill="#f4a9a0" opacity=".7"/>
+</svg>`
+};
+const EYE=`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M4 24C10 13 17 9 24 9s14 4 20 15c-6 11-13 15-20 15S10 35 4 24Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><circle cx="24" cy="24" r="7" fill="currentColor"/></svg>`;
+const HEART=`<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 41S6 30 6 17c0-6 5-10 10-10 4 0 7 2 8 5 1-3 4-5 8-5 5 0 10 4 10 10 0 13-18 24-18 24Z" fill="currentColor"/></svg>`;
+
+/* ---------- data ---------- */
+const S1=[
+ {q:"다리가 있나요?",same:true,emoji:"🐦",animal:"참새",a:"다리 2개가 보여요.",b:"다리 2개가 보여요.",ra:"그렇다",rb:"그렇다",why:"다리는 눈으로 보고 확인할 수 있어서 누가 나누어도 같아요."},
+ {q:"귀엽나요?",same:false,emoji:"🐍",animal:"뱀",a:"뱀은 귀여워요.",b:"뱀은 귀엽지 않아요.",ra:"그렇다",rb:"그렇지 않다",why:"귀여운지는 마음으로 느끼는 것이라 사람마다 생각이 달라요."},
+ {q:"날개가 있나요?",same:true,emoji:"🐧",animal:"펭귄",a:"짧은 날개가 보여요.",b:"짧은 날개가 보여요.",ra:"그렇다",rb:"그렇다",why:"펭귄은 잘 날지 못해도 날개는 눈으로 보여요. 그래서 누가 나누어도 같아요."},
+ {q:"크나요?",same:false,emoji:"🐸",animal:"개구리",a:"거미보다 크니까 커요.",b:"토끼보다 작으니까 작아요.",ra:"그렇다",rb:"그렇지 않다",why:"무엇과 견주느냐에 따라 결과가 달라져요."},
+ {q:"부리가 있나요?",same:true,emoji:"🐔",animal:"닭",a:"뾰족한 부리가 보여요.",b:"뾰족한 부리가 보여요.",ra:"그렇다",rb:"그렇다",why:"부리는 사진을 보면 누구나 찾을 수 있어요."},
+ {q:"사나워 보이나요?",same:false,emoji:"🐸",animal:"개구리",a:"개구리는 순해 보여요.",b:"개구리는 사나워 보여요.",ra:"그렇지 않다",rb:"그렇다",why:"새롬 씨가 쓴 기준이에요! 사나워 보이는지는 사람마다 다르게 느껴서 밤새 소동이 났어요."},
+ {q:"다리가 네 개인가요?",same:true,emoji:"🐿️",animal:"다람쥐",a:"하나, 둘, 셋, 넷! 4개예요.",b:"하나, 둘, 셋, 넷! 4개예요.",ra:"그렇다",rb:"그렇다",why:"다리 수는 하나씩 세어 보면 누가 세어도 같아요."},
+ {q:"무섭나요?",same:false,emoji:"🕷️",animal:"거미",a:"거미는 무서워요.",b:"거미는 하나도 안 무서워요.",ra:"그렇다",rb:"그렇지 않다",why:"무서운지는 마음으로 느끼는 것이라 사람마다 달라요."},
+ {q:"껍데기가 있나요?",same:true,emoji:"🐌",animal:"달팽이",a:"빙글빙글 말린 껍데기가 보여요.",b:"빙글빙글 말린 껍데기가 보여요.",ra:"그렇다",rb:"그렇다",why:"껍데기는 눈으로 확인할 수 있어요."},
+ {q:"어른 손바닥보다 큰가요?",same:true,chal:true,emoji:"🐰",animal:"토끼",a:"손바닥에 대어 보니 더 커요.",b:"손바닥에 대어 보니 더 커요.",ra:"그렇다",rb:"그렇다",why:"'크나요?'에 견줄 대상을 정해 주니 누가 나누어도 같은 결과가 나와요!"}
+];
+const CRIT={
+ legs:{q:"다리가 있나요?",y:"다리가 있어요",n:"다리가 없어요",look:"다리"},
+ wings:{q:"날개가 있나요?",y:"날개가 있어요",n:"날개가 없어요",look:"날개"},
+ beak:{q:"부리가 있나요?",y:"부리가 있어요",n:"부리가 없어요",look:"부리"},
+ fins:{q:"지느러미가 있나요?",y:"지느러미가 있어요",n:"지느러미가 없어요",look:"지느러미"},
+ four:{q:"다리가 네 개인가요?",y:"다리가 4개예요",n:"다리가 4개가 아니에요",look:"다리 수"}
+};
+const NEW=[
+ {key:"ostrich",name:"타조",has:{legs:true,wings:true,beak:true,fins:false,four:false},
+  r:{legs:"긴 다리 2개가 보여요",wings:"몸 옆에 날개가 보여요",beak:"얼굴 끝에 부리가 보여요",fins:"지느러미는 보이지 않아요",four:"다리를 세어 보니 2개예요"}},
+ {key:"whale",name:"고래",has:{legs:false,wings:false,beak:false,fins:true,four:false},
+  r:{legs:"다리가 보이지 않아요",wings:"날개가 보이지 않아요",beak:"부리가 보이지 않아요",fins:"몸 옆과 꼬리에 지느러미가 보여요",four:"다리가 보이지 않아요"}},
+ {key:"lizard",name:"도마뱀",has:{legs:true,wings:false,beak:false,fins:false,four:true},
+  r:{legs:"다리 4개가 보여요",wings:"날개가 보이지 않아요",beak:"부리가 보이지 않아요",fins:"지느러미가 보이지 않아요",four:"다리를 세어 보니 4개예요"}},
+ {key:"pangolin",name:"천산갑",mystery:true,has:{legs:true,wings:false,beak:false,fins:false,four:true},
+  r:{legs:"짧은 다리 4개가 보여요",wings:"날개가 보이지 않아요",beak:"부리가 보이지 않아요",fins:"지느러미가 보이지 않아요",four:"다리를 세어 보니 4개예요"}}
+];
+const josa=(w,a,b)=>{const c=w.charCodeAt(w.length-1)-0xAC00;return w+((c>=0&&c%28)?a:b)};
+
+/* ---------- state ---------- */
+let state={screen:"home"};
+let s1={i:0,pick:null,log:[]};
+let s2={crit:null,i:0,yes:[],no:[],fb:null,shake:null,revealed:false};
+let s3={step:0,first:null};
+
+/* ---------- sound ---------- */
+let soundOn=true,ac=null;
+function tone(kind){
+  if(!soundOn)return;
+  try{
+    ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+    const seq=kind==="good"?[660,880]:kind==="puzzle"?[520,440,620]:[330,300];
+    seq.forEach((f,k)=>{const o=ac.createOscillator(),g=ac.createGain();o.type="triangle";o.frequency.value=f;
+      const t=ac.currentTime+k*0.13;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.25,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+0.25);
+      o.connect(g).connect(ac.destination);o.start(t);o.stop(t+0.3);});
+  }catch(e){}
+}
+
+/* ---------- render ---------- */
+const view=document.getElementById("view");
+function go(screen){state.screen=screen;render();try{view.scrollTop=0;window.scrollTo(0,0)}catch(e){}}
+function tabs(){
+  const t=[["s1","1 기준 고르기"],["s2","2 새 동물 나누기"],["s3","3 마지막 손님"]];
+  document.getElementById("tabs").innerHTML=t.map(([k,l])=>`<button class="tab" type="button" data-go="${k}" aria-current="${state.screen===k}">${l}</button>`).join("");
+}
+function render(){
+  tabs();
+  view.innerHTML=({home:renderHome,s1:renderS1,s2:renderS2,s3:renderS3})[state.screen]();
+}
+
+function renderHome(){
+  return `<section class="home">
+   <div style="display:flex;flex-direction:column;gap:1em">
+    <p class="eyebrow">동물을 분류할 때 어떤 기준이 필요할까요?</p>
+    <h1>새롬 사육사를 도와줘!</h1>
+    <div class="story">${ART.keeper()}
+     <div class="bubble">이사 첫날 밤, 동물들의 우리가 자꾸 바뀌어서 큰일 났어요.<br><b>누가 나누어도 똑같이 나눌 수 있는 기준</b>을 알려 주세요!</div>
+    </div>
+   </div>
+   <div class="stages">
+    ${stageCard("s1","1","어떤 기준을 알려 줄까?","기준 카드 10장을 보고 '누가 나누어도 같아요'와 '사람마다 달라요'로 나누어요.")}
+    ${stageCard("s2","2","새로 이사 온 동물 나누기","타조, 고래, 도마뱀, 이름표가 떨어진 동물을 우리 모둠 기준으로 두 우리에 넣어요.")}
+    ${stageCard("s3","3","마지막 손님, 오리너구리","부리 우리와 다리가 네 개인 동물 우리, 어디로 가야 할까요?")}
+   </div>
+  </section>`;
+}
+function stageCard(k,n,t,d){return `<button class="stage-card" type="button" data-go="${k}"><span class="num">${n}</span><span><h3>${t}</h3><span style="display:block;font-size:.85em">${d}</span></span><span class="go" aria-hidden="true">→</span></button>`}
+
+/* stage 1 */
+function renderS1(){
+  if(s1.i>=S1.length)return renderS1Board();
+  const it=S1[s1.i],picked=s1.pick!==null;
+  const dots=S1.map((_,k)=>`<span class="dot ${k<s1.i?"done":k===s1.i?"now":""}"></span>`).join("");
+  let fb=`<p class="wait">이 기준으로 새롬 씨와 선배 사육사가<br>따로 나누면 결과가 같을까요?</p>`;
+  if(picked){
+    const right=(s1.pick==="same")===it.same;
+    fb=`<p class="verdict ${right?"good":"think"}">${right?"맞아요!":"함께 확인해 볼까요?"}</p>
+     <div class="ex-animal" aria-hidden="true">${it.emoji}</div>
+     <p style="text-align:center;font-family:var(--display)">${josa(it.animal,"을","를")} 나누어 보면…</p>
+     <div class="duo">
+      <div class="who"><div class="name">새롬 씨</div><div class="say">${it.a}</div><div class="ans">→ ${it.ra}</div></div>
+      <div class="who"><div class="name">선배 사육사</div><div class="say">${it.b}</div><div class="ans">→ ${it.rb}</div></div>
+     </div>
+     <div class="result-tag ${it.same?"same":"diff"}">${it.same?"결과가 같아요":"결과가 달라요"}</div>
+     <p class="why">${it.why}</p>
+     <button class="btn" type="button" data-act="s1next">${s1.i===S1.length-1?"칠판에 정리하기":"다음 기준 카드"} →</button>`;
+  }
+  return `<section class="s1">
+   <div>
+    <p class="eyebrow">1단계 · 사육사에게 알려 줄 기준 고르기 (${s1.i+1}/${S1.length})</p>
+    <div class="crit-card" style="margin-top:.9em">${it.chal?`<span class="chal">도전!</span><br>`:""}<span class="label">기준 카드</span><div class="q">${it.q}</div></div>
+    <div class="choices">
+     <button class="choice eye ${s1.pick==="same"?"picked":""}" type="button" data-act="s1pick" data-v="same" ${picked?"disabled":""}>${EYE}누가 나누어도<br>같아요</button>
+     <button class="choice heart ${s1.pick==="diff"?"picked":""}" type="button" data-act="s1pick" data-v="diff" ${picked?"disabled":""}>${HEART}사람마다<br>달라요</button>
+    </div>
+    <div class="dots" aria-hidden="true">${dots}</div>
+   </div>
+   <div class="feedback">${fb}</div>
+  </section>`;
+}
+function renderS1Board(){
+  const same=S1.filter(x=>x.same).map(x=>`<span class="chip">${x.q}</span>`).join("");
+  const diff=S1.filter(x=>!x.same).map(x=>`<span class="chip">${x.q}</span>`).join("");
+  return `<p class="eyebrow">1단계 정리 · 칠판의 두 칸</p>
+   <div class="board">
+    <div class="board-col same"><h3>결과가 같았어요</h3><p class="sub">눈으로 확인할 수 있는 것</p><div class="chips">${same}</div></div>
+    <div class="board-col diff"><h3>결과가 달랐어요</h3><p class="sub">마음으로 느끼는 것, 견줄 대상이 없는 것</p><div class="chips">${diff}</div></div>
+   </div>
+   <div class="takeaway"><b>과학에서 필요한 분류 기준</b><p>다리, 날개처럼 눈으로 확인할 수 있어서 <strong>누가 분류해도 같은 결과가 나오는 기준</strong> (객관적인 기준)</p></div>
+   <div class="row"><button class="btn ghost" type="button" data-act="s1reset">처음부터 다시</button><button class="btn" type="button" data-go="s2">새로 이사 온 동물 나누기 →</button></div>`;
+}
+
+/* stage 2 */
+function renderS2(){
+  if(!s2.crit){
+    return `<section class="pick-crit">
+     <p class="eyebrow">2단계 · 다음 날, 동물원에 새 친구들이 이사 왔어요</p>
+     <h2>우리 모둠이 새롬 씨에게 알려 준 기준은 무엇인가요?</h2>
+     <div class="lineup">${NEW.map(a=>`<figure>${ART[a.key]()}<figcaption>${a.mystery?"이름표가 떨어졌어요":a.name}</figcaption></figure>`).join("")}</div>
+     <div class="crit-grid">${Object.entries(CRIT).map(([k,c])=>`<button class="crit-btn" type="button" data-act="s2crit" data-v="${k}">${c.q}</button>`).join("")}</div>
+    </section>`;
+  }
+  const c=CRIT[s2.crit],done=s2.i>=NEW.length,a=NEW[s2.i];
+  const res=list=>list.map(k=>{const x=NEW[k];return `<div class="resident">${ART[x.key]()}<span>${x.mystery&&!s2.revealed?"?":x.name}</span></div>`}).join("");
+  const pen=(side,label,sub,list)=>`<button class="pen ${s2.shake===side?"wrong":""}" type="button" data-act="s2put" data-v="${side}" ${done||s2.fb?.ok?"disabled":""} aria-label="${label} 우리">
+     <div class="plaque"><b>${label}</b><small>${sub}</small></div>
+     <div class="yard">${list.length?res(list):`<span class="pen-hint">여기에 넣어요</span>`}</div><div class="fence"></div></button>`;
+  let gate;
+  if(!done){
+    gate=`<div class="gate"><p class="crit-mini">${c.q}</p>
+      <div class="arrival"><div class="pic">${ART[a.key]()}</div>
+       ${a.mystery?`<span class="nametag lost">이름표가 떨어졌어요</span>`:`<span class="nametag">${a.name}</span>`}</div>
+      <p class="ask">어느 우리에 넣을까요?</p></div>`;
+  }else{
+    gate=`<div class="gate"><p class="crit-mini">${c.q}</p>
+      <div class="arrival" style="border-style:solid;border-color:var(--ok)"><p style="font-family:var(--display);font-size:1.3em;color:var(--ok)">모두 나누었어요!</p>
+       <p>짝 모둠도 같은 기준으로 나누었다면<br>결과가 같은지 확인해 보세요.</p></div></div>`;
+  }
+  let msg="";
+  if(s2.fb){
+    msg=s2.fb.ok
+     ?`<div class="msg ok"><p><strong>좋아요!</strong> ${s2.fb.text}</p><button class="btn" type="button" data-act="s2next">${s2.i>=NEW.length-1?"결과 보기":"다음 동물 데려오기"} →</button></div>`
+     :`<div class="msg hint"><p><strong>그림을 다시 자세히 볼까요?</strong> ${s2.fb.text}</p></div>`;
+  }else if(done){
+    msg=s2.revealed
+     ?`<div class="msg info"><p><strong>이름표가 떨어진 동물은 천산갑이에요.</strong> 이름을 몰라도 생김새로 나눌 수 있었네요!</p><div class="row"><button class="btn ghost" type="button" data-act="s2reset">다른 기준으로 나누기</button><button class="btn" type="button" data-go="s3">마지막 손님 맞이하기 →</button></div></div>`
+     :`<div class="msg info"><p><strong>이름표가 떨어진 동물의 이름은 무엇일까요?</strong> 이름을 몰랐는데도 우리에 넣을 수 있었나요?</p><button class="btn sun" type="button" data-act="s2reveal">이름표 찾아 주기</button></div>`;
+  }
+  return `<p class="eyebrow">2단계 · 새로 이사 온 동물 나누기 (${Math.min(s2.i+1,NEW.length)}/${NEW.length})</p>
+   <section class="zoo">${pen("yes","그렇다",c.y,s2.yes)}${gate}${pen("no","그렇지 않다",c.n,s2.no)}</section>${msg}`;
+}
+
+/* stage 3 */
+function renderS3(){
+  const glowB=s3.step>=2||s3.first==="beak",glowL=s3.step>=2||s3.first==="legs";
+  const pen=(side,label,sub,glow)=>`<button class="pen ${glow?"glow":""}" type="button" data-act="s3put" data-v="${side}" ${s3.step>0?"disabled":""}>
+    <div class="plaque"><b>${label}</b><small>${sub}</small></div>
+    <div class="yard">${(s3.step===1&&s3.first===side)?`<div class="resident">${ART.platypus()}<span>오리너구리</span></div>`:`<span class="pen-hint">${s3.step>=2?"여기도 맞아요?":"여기에 넣어요"}</span>`}</div><div class="fence"></div></button>`;
+  const callouts=s3.step>=2?`<span class="callout b" style="right:0;top:28%">부리</span><span class="callout" style="left:28%;bottom:0">다리 4개</span>`:"";
+  const showGate=s3.step!==1;
+  const gate=`<div class="gate"><p class="crit-mini">마지막으로 이사 온 동물</p>
+    <div class="arrival" ${s3.step>=2?'style="border-color:var(--heart);border-style:solid"':""}>
+     ${showGate?`<div class="pic">${ART.platypus()}${callouts}</div><span class="nametag">오리너구리</span>`:`<p style="padding:2em 0;color:var(--muted)">오리너구리가 우리에 들어갔어요.</p>`}
+    </div>
+    <p class="ask">${s3.step===0?"어느 우리에 넣어야 할까요?":s3.step===1?"정말 이 우리 하나뿐일까요?":"두 우리에 모두 들어가요!"}</p></div>`;
+  let msg="";
+  if(s3.step===0)msg=`<div class="msg info"><p>동물원에는 여러분이 알려 준 기준으로 만든 두 우리가 있어요. 오리너구리를 자세히 보고 골라 보세요.</p></div>`;
+  if(s3.step===1){
+    const t=s3.first==="beak"?"부리가 있으니까 부리 우리에 넣었어요.":"다리가 네 개니까 다리 우리에 넣었어요.";
+    msg=`<div class="msg ok"><p><strong>${t}</strong> 그런데 오리너구리를 한 번 더 자세히 볼까요?</p><button class="btn sun" type="button" data-act="s3look">다시 자세히 보기</button></div>`;
+  }
+  if(s3.step===2)msg=`<div class="msg puzzle"><p><strong>부리도 있고, 다리도 네 개예요!</strong> 한 가지 생김새로만 만든 우리로는 오리너구리가 들어갈 곳을 하나로 정할 수 없어요. 어떻게 하면 좋을까요?</p><button class="btn" type="button" data-act="s3end">생각해 보기 →</button></div>`;
+  if(s3.step===3)msg=`<div class="msg puzzle"><p><strong>오늘은 답을 정하지 말고, 집에 가서도 생각해 보세요.</strong> 다음 시간에는 오리너구리가 들어갈 우리를 정하는 방법을 함께 찾아봐요!</p><div class="row"><button class="btn ghost" type="button" data-act="s3reset">다시 해 보기</button><button class="btn" type="button" data-go="home">처음 화면</button></div></div>`;
+  return `<p class="eyebrow">3단계 · 마지막 손님</p>
+   <section class="zoo">${pen("beak","부리 우리","부리가 있는 동물",glowB)}${gate}${pen("legs","다리 우리","다리가 네 개인 동물",glowL)}</section>${msg}`;
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const g=e.target.closest("[data-go]");
+  if(g){go(g.dataset.go);return}
+  const b=e.target.closest("[data-act]");if(!b||b.disabled)return;
+  const v=b.dataset.v;
+  switch(b.dataset.act){
+    case "s1pick":{s1.pick=v;const it=S1[s1.i];tone((v==="same")===it.same?"good":"hint");render();break}
+    case "s1next":s1.i++;s1.pick=null;render();break;
+    case "s1reset":s1={i:0,pick:null,log:[]};render();break;
+    case "s2crit":s2={crit:v,i:0,yes:[],no:[],fb:null,shake:null,revealed:false};render();break;
+    case "s2put":{
+      const a=NEW[s2.i],yes=a.has[s2.crit],side=yes?"yes":"no",who=a.mystery?"이 동물은":josa(a.name,"은","는");
+      if(v===side){s2[side].push(s2.i);s2.shake=null;
+        s2.fb={ok:true,text:`${who} ${a.r[s2.crit]}. 그래서 '${yes?"그렇다":"그렇지 않다"}' 우리예요.`};tone("good");}
+      else{s2.shake=v;s2.fb={ok:false,text:s2.crit==="four"?"다리를 하나씩 세어 보세요.":`${josa(CRIT[s2.crit].look,"이","가")} 있는지 찾아보세요.`};tone("hint");}
+      render();break}
+    case "s2next":s2.i++;s2.fb=null;s2.shake=null;render();break;
+    case "s2reveal":s2.revealed=true;tone("good");render();break;
+    case "s2reset":s2={crit:null,i:0,yes:[],no:[],fb:null,shake:null,revealed:false};render();break;
+    case "s3put":s3={step:1,first:v};tone("good");render();break;
+    case "s3look":s3.step=2;tone("puzzle");render();break;
+    case "s3end":s3.step=3;render();break;
+    case "s3reset":s3={step:0,first:null};render();break;
+  }
+});
+document.getElementById("homeBtn").addEventListener("click",()=>go("home"));
+const sb=document.getElementById("soundBtn");
+sb.addEventListener("click",()=>{soundOn=!soundOn;sb.textContent=soundOn?"소리 켬":"소리 끔";sb.setAttribute("aria-pressed",soundOn)});
+document.getElementById("fsBtn").addEventListener("click",()=>{
+  try{if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});else document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}
+});
+const QR_URL=location.href.split("#")[0];
+const qrWrap=document.getElementById("qrWrap"),qrBox=document.getElementById("qrBox");
+let qrMade=false;
+document.getElementById("qrUrl").textContent=QR_URL;
+document.getElementById("qrBtn").addEventListener("click",()=>{
+  qrWrap.hidden=false;
+  if(!qrMade){
+    try{new QRCode(qrBox,{text:QR_URL,width:512,height:512,colorDark:"#123A25",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});qrMade=true}
+    catch(e){qrBox.innerHTML='<p style="padding:1em;text-align:center">QR 코드를 불러오지 못했어요.<br>아래 주소를 칠판에 적어 주세요.</p>'}
+  }
+  document.getElementById("qrClose").focus();
+});
+document.getElementById("qrClose").addEventListener("click",()=>{qrWrap.hidden=true});
+qrWrap.addEventListener("click",e=>{if(e.target===qrWrap)qrWrap.hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")qrWrap.hidden=true});
+render();
+})();
+</script>
+</body>
+</html>
