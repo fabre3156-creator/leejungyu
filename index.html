@@ -326,7 +326,7 @@ const S1=[
  {q:"다리가 네 개인가요?",same:true,emoji:"🐿️",animal:"다람쥐",a:"하나, 둘, 셋, 넷! 4개예요.",b:"하나, 둘, 셋, 넷! 4개예요.",ra:"그렇다",rb:"그렇다",why:"다리 수는 하나씩 세어 보면 누가 세어도 같아요."},
  {q:"무섭나요?",same:false,emoji:"🕷️",animal:"거미",a:"거미는 무서워요.",b:"거미는 하나도 안 무서워요.",ra:"그렇다",rb:"그렇지 않다",why:"무서운지는 마음으로 느끼는 것이라 사람마다 달라요."},
  {q:"껍데기가 있나요?",same:true,emoji:"🐌",animal:"달팽이",a:"빙글빙글 말린 껍데기가 보여요.",b:"빙글빙글 말린 껍데기가 보여요.",ra:"그렇다",rb:"그렇다",why:"껍데기는 눈으로 확인할 수 있어요."},
- {q:"어른 손바닥보다 큰가요?",same:true,chal:true,emoji:"🐰",animal:"토끼",a:"손바닥에 대어 보니 더 커요.",b:"손바닥에 대어 보니 더 커요.",ra:"그렇다",rb:"그렇다",why:"'크나요?'에 견줄 대상을 정해 주니 누가 나누어도 같은 결과가 나와요!"}
+ {q:"어른 손바닥보다 큰가요?",same:false,chal:true,emoji:"🐦",animal:"참새",a:"내 손바닥에 대어 보니 참새가 더 커요.",b:"내 손바닥이 더 커서 참새가 더 작아요.",ra:"그렇다",rb:"그렇지 않다",why:"어른마다 손바닥 크기가 달라요. 견줄 대상을 정해도 누구 손바닥에 대느냐에 따라 결과가 달라져요."}
 ];
 const CRIT={
  legs:{q:"다리가 있나요?",y:"다리가 있어요",n:"다리가 없어요",look:"다리"},
@@ -434,7 +434,7 @@ function renderS1Board(){
   return `<p class="eyebrow">1단계 정리 · 칠판의 두 칸</p>
    <div class="board">
     <div class="board-col same"><h3>결과가 같았어요</h3><p class="sub">눈으로 확인할 수 있는 것</p><div class="chips">${same}</div></div>
-    <div class="board-col diff"><h3>결과가 달랐어요</h3><p class="sub">마음으로 느끼는 것, 견줄 대상이 없는 것</p><div class="chips">${diff}</div></div>
+    <div class="board-col diff"><h3>결과가 달랐어요</h3><p class="sub">마음으로 느끼는 것, 견줄 대상이 사람마다 다른 것</p><div class="chips">${diff}</div></div>
    </div>
    <div class="takeaway"><b>과학에서 필요한 분류 기준</b><p>다리, 날개처럼 눈으로 확인할 수 있어서 <strong>누가 분류해도 같은 결과가 나오는 기준</strong> (객관적인 기준)</p></div>
    <div class="row"><button class="btn ghost" type="button" data-act="s1reset">처음부터 다시</button><button class="btn" type="button" data-go="s2">새로 이사 온 동물 나누기 →</button></div>`;
